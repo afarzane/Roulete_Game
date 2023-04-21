@@ -1,0 +1,34 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+
+LIBRARY WORK;
+USE WORK.ALL;
+
+ENTITY  digit7seg_tb IS
+
+	PORT(
+		inputval : in unsigned(3 downto 0);
+		
+		HEX : out std_logic_vector(5 downto 0)
+	
+	);
+	
+END ENTITY;
+
+
+ARCHITECTURE behaviour OF digit7seg_tb IS
+
+BEGIN
+
+	inst_digit7seg : entity work.digit7seg(behavioral)
+		port map(
+			digit <= inputval;
+			
+			seg7 <= HEX(0)
+		
+		);
+		
+		inputval <= "0000";
+
+END ARCHITECTURE;

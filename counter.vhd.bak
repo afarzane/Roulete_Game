@@ -1,0 +1,31 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+
+LIBRARY WORK;
+USE WORK.ALL;
+
+ENTITY  counter IS
+
+	PORT(
+		
+		clk : in std_logic;
+		resetb : in std_logic;
+		Key_in : in std_logic;
+		ket_out : out std_logic
+		
+	);
+	
+END ENTITY;
+
+
+ARCHITECTURE behaviour OF counter IS
+	
+	
+
+BEGIN
+	
+	
+		
+		
+END ARCHITECTURE;

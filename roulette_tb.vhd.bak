@@ -1,0 +1,214 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+ 
+LIBRARY WORK;
+USE WORK.ALL;
+
+----------------------------------------------------------------------
+--
+--  This is the top level template for Lab 2.  Use the schematic on Page 4
+--  of the lab handout to guide you in creating this structural description.
+--  The combinational blocks have already been designed in previous tasks,
+--  and the spinwheel block is given to you.  Your task is to combine these
+--  blocks, as well as add the various registers shown on the schemetic, and
+--  wire them up properly.  The result will be a roulette game you can play
+--  on your DE2.
+--
+-----------------------------------------------------------------------
+
+ENTITY roulette IS
+	PORT(   
+		CLOCK_50 : IN STD_LOGIC; -- the fast clock for spinning wheel
+		KEY : IN STD_LOGIC_VECTOR(3 downto 0);  -- includes slow_clock and reset
+		SW : IN STD_LOGIC_VECTOR(17 downto 0);
+		LEDG : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);  -- ledg
+		HEX7 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 7
+		HEX6 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 6
+		HEX5 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 5
+		HEX4 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 4
+		HEX3 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 3
+		HEX2 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 2
+		HEX1 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);  -- digit 1
+		HEX0 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)   -- digit 0
+		
+	);
+END roulette;
+
+
+ARCHITECTURE structural OF roulette IS
+
+--type state_type is (reset, update, gameover);
+--signal state := state_type := reset; 
+
+--misc signals
+signal SW_US : unsigned(17 downto 0);
+
+--row 1
+signal spin_result : unsigned(5 downto 0);
+
+--row 2
+signal spin_result_latched : unsigned(5 downto 0);
+signal bet1_value : unsigned (5 downto 0);
+signal bet2_colour : std_logic;
+signal bet3_dozen : unsigned(1 downto 0);
+
+--row 3
+signal bet1_wins : std_logic;
+signal bet2_wins : std_logic;
+signal bet3_wins : std_logic;
+
+--row 4
+signal bet1_amount : unsigned(2 downto 0);
+signal bet2_amount : unsigned(2 downto 0);
+signal bet3_amount : unsigned(2 downto 0);
+signal money : unsigned(11 downto 0);
+
+--row 5
+signal new_money : unsigned(11 downto 0);
+
+
+BEGIN
+
+
+-- Row one of diagram
+	inst_spinwheel : entity work.spinwheel(behavioral)
+		port map(
+			fast_clock => CLOCK_50,
+			resetb => KEY(1),
+			spin_result => spin_result
+		);
+
+		
+-- Row two of diagram
+	spin_result_reg : entity work.REG_6bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => spin_result,
+			stored_value => spin_result_latched
+		);
+	
+	bet1_reg : entity work.REG_6bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => unsigned(SW(8 downto 3)),
+			stored_value => bet1_value
+		);
+		
+	bet2_DFF : entity work.myDFF(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => SW(12),
+			stored_value => bet2_colour
+		);
+		
+	bet3_reg : entity work.REG_2bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => unsigned(SW(17 downto 16)),
+			stored_value => bet3_dozen
+		);
+	
+	
+-- Row three of diagram
+	hexdisp6 : entity work.digit7seg(behavioral)
+		port map(
+			digit => spin_result_latched(3 downto 0),
+			seg7 => HEX6(6 downto 0)
+		);
+	
+	hexdisp7 : entity work.digit7seg(behavioral)
+		port map(
+			digit => "00" & spin_result_latched(5 downto 4),
+			seg7 => HEX7(6 downto 0)
+		);
+		
+	win_block : entity work.win(behavioural)
+		port map(
+			spin_result_latched => spin_result_latched,
+			bet1_value => bet1_value,
+			bet2_colour => bet2_colour,
+			bet3_dozen => bet3_dozen,
+			bet1_wins => bet1_wins,
+         bet2_wins => bet2_wins,
+         bet3_wins => bet3_wins
+		);
+		
+	LEDG(0) <= bet1_wins;
+	LEDG(1) <= bet2_wins;
+	LEDG(2) <= bet3_wins;
+	
+-- Row four of diagram	
+	bet1_amount_reg : entity work.REG_3bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => unsigned(SW(2 downto 0)),
+			stored_value => bet1_amount
+		);	
+	
+	bet2_amount_reg : entity work.REG_3bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => unsigned(SW(11 downto 9)),
+			stored_value => bet2_amount
+		);
+	
+	bet3_amount_reg : entity work.REG_3bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => unsigned(SW(15 downto 13)),
+			stored_value => bet3_amount
+		);
+		
+	money_reg : entity work.REG_12bit(bhv)
+		port map(
+			clk => KEY(0),
+			resetb => KEY(1),
+			input_value => new_money,
+			stored_value => money
+		);
+		
+-- Row five of diagram	
+	new_balance_block : entity work.new_balance(behavioural)
+		port map(
+			money => money,
+			value1 => bet1_amount,
+			value2 => bet2_amount,
+			value3 => bet3_amount,
+			bet1_wins => bet1_wins,
+			bet2_wins => bet2_wins,
+			bet3_wins => bet3_wins,
+			new_money => new_money
+		);
+
+-- Row six of diagram	
+	hexdisp0 : entity work.digit7seg(behavioral)
+		port map(
+			digit => new_money(3 downto 0),
+			seg7 => HEX0(6 downto 0)
+		);
+	
+	hexdisp1 : entity work.digit7seg(behavioral)
+		port map(
+			digit => new_money(7 downto 4),
+			seg7 => HEX1(6 downto 0)
+		);
+
+		
+	hexdisp2 : entity work.digit7seg(behavioral)
+		port map(
+			digit => new_money(11 downto 8),
+			seg7 => HEX2(6 downto 0)
+		);
+		
+	
+	
+		
+END ARCHITECTURE;

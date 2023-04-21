@@ -1,0 +1,113 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -7.093
+TNS   : -90.116
+
+Type  : Slow 1200mV 85C Model Setup 'CLOCK_50'
+Slack : -3.169
+TNS   : -120.701
+
+Type  : Slow 1200mV 85C Model Setup 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -2.993
+TNS   : -2.993
+
+Type  : Slow 1200mV 85C Model Hold 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -0.123
+TNS   : -0.123
+
+Type  : Slow 1200mV 85C Model Hold 'CLOCK_50'
+Slack : 0.427
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : 1.039
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -3.000
+TNS   : -71.105
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -1.285
+TNS   : -46.260
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : 0.445
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -6.286
+TNS   : -80.403
+
+Type  : Slow 1200mV 0C Model Setup 'CLOCK_50'
+Slack : -2.843
+TNS   : -104.507
+
+Type  : Slow 1200mV 0C Model Setup 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -2.593
+TNS   : -2.593
+
+Type  : Slow 1200mV 0C Model Hold 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -0.113
+TNS   : -0.113
+
+Type  : Slow 1200mV 0C Model Hold 'CLOCK_50'
+Slack : 0.387
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : 0.915
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -3.000
+TNS   : -71.105
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -1.285
+TNS   : -46.260
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : 0.471
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -2.975
+TNS   : -36.459
+
+Type  : Fast 1200mV 0C Model Setup 'CLOCK_50'
+Slack : -1.583
+TNS   : -43.196
+
+Type  : Fast 1200mV 0C Model Setup 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -1.383
+TNS   : -1.383
+
+Type  : Fast 1200mV 0C Model Hold 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : -0.046
+TNS   : -0.046
+
+Type  : Fast 1200mV 0C Model Hold 'CLOCK_50'
+Slack : 0.130
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : 0.360
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -3.000
+TNS   : -71.543
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'debouncer:debouncer1|myDFF_EN:DFF_EN1|stored_value'
+Slack : -1.000
+TNS   : -36.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'REG_6bit:spin_result_reg|stored_value[0]'
+Slack : 0.345
+TNS   : 0.000
+
+------------------------------------------------------------

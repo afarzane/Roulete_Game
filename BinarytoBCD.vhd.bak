@@ -1,0 +1,91 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+
+LIBRARY WORK;
+USE WORK.ALL;
+
+ENTITY BinarytoBCD IS
+
+	port(
+		
+		clk : IN std_logic;
+		resetb : IN std_logic;
+		
+		bin_value : IN unsigned(11 downto 0);
+		bcd_ones : OUT unsigned(3 downto 0);
+		bcd_tens : OUT unsigned(3 downto 0);
+		bcd_hundreds : OUT unsigned(3 downto 0);
+		bcd_thousands : OUT unsigned(3 downto 0);
+	
+	);
+	
+	
+END ENTITY;
+
+
+ARCHITECTURE bhv OF BinarytoBCD IS
+	
+
+BEGIN
+
+	process(clk, resetb)
+		
+		variable shift_register : unsigned(27 downto 0) := 0;
+		
+		variable temp_ones : unsigned(3 downto 0) := 0;
+		variable temp_tens : unsigned(3 downto 0) := 0;
+		variable temp_hunds : unsigned(3 downto 0) := 0;
+		variable temp_thous : unsigned(3 downto 0) := 0;
+		
+		variable old_bin : unsigned(11 downto 0) := 0;
+	
+	
+	begin
+	
+		if(resetb = '0' or falling_edge(clk)) then
+				
+			for i in 0 to 11 loop
+				
+				if( i = 0 & old_bin /= bin_value) then
+					old_bin := bin_value;
+					
+					shift_register(11 downto 0) := bin_value;
+					temp_ones := shift_register(15 downto 12);
+					temp_tens := shift_register(19 downto 16);
+					temp_hunds := shift_register(23 downto 20);
+					temp_thous := shift_register(27 downto 24);
+					
+				end if;
+			
+				if( i < 12 & i > 0) then
+					
+					if(temp_thous >= "0101") then
+						temp_thous := temp_thous + "0011";
+					end if;
+					
+					if(temp_hunds >= "0101") then
+						temp_hunds := temp_hunds + "0011";
+					end if;
+					
+					if(temp_tens >= "0101") then
+						temp_tens := temp_tens + "0011";
+					end if;
+					
+					if(temp_ones >= "0101") then
+						temp_ones := temp_ones + "0011";
+					end if;
+			
+					shift_register(27 downto 12) := temp_thous & temp_hunds & temp_tens & temp_ones;
+					
+					shift_register := shift_left(shift_register, 1);
+				
+				end if;
+				
+			end loop;
+			
+		end if;
+
+	end process;
+
+END ARCHITECTURE;
