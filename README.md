@@ -1,6 +1,6 @@
 # Roulete_Game
 
-Roulette game made using VHDL. Input bets through slider switches and receive outputs through the HEX displays.
+Roulette game made using VHDL for the Altera DE2-115 board (Cyclone IV E). Input bets through slider switches and receive outputs through the HEX displays.
 
 KEY(1): used for resetting game.
 KEY(0): used for reading switch values (user bets)
